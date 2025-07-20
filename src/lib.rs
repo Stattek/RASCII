@@ -22,10 +22,12 @@
 
 pub mod charsets;
 
+mod char_override;
 mod gif_renderer;
 mod image_renderer;
 mod renderer;
 
+pub use char_override::convert_string_to_str_vec;
 use image::DynamicImage;
 use image_renderer::ImageRenderer;
 pub use renderer::RenderOptions;

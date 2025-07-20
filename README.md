@@ -17,14 +17,15 @@ Arguments:
   <FILENAME>  Path to the image
 
 Options:
-  -w, --width <WIDTH>      Width of the output image. Defaults to 128 if width and height are not specified
-  -H, --height <HEIGHT>    Height of the output image, if not specified, it will be calculated to keep the aspect ratio
-  -c, --color              Whether to use colors in the output image
-  -e, --escape-each-char   Whether all characters should have an ANSI color code before each character. Defaults to only escape colored strings upon color change
-  -i, --invert             Inverts the weights of the characters. Useful for white backgrounds
-  -C, --charset <CHARSET>  Characters used to render the image, from transparent to opaque. Built-in charsets: block, emoji, default, russian, slight [default: default]
-  -h, --help               Print help
-  -V, --version            Print version
+  -w, --width <WIDTH>                  Width of the output image. Defaults to 128 if width and height are not specified
+  -H, --height <HEIGHT>                Height of the output image, if not specified, it will be calculated to keep the aspect ratio
+  -c, --color                          Whether to use colors in the output image
+  -e, --escape-each-char               Whether all characters should have an ANSI color code before each character. Defaults to only escape colored strings upon color change
+  -i, --invert                         Inverts the weights of the characters. Useful for white backgrounds
+  -C, --charset <CHARSET>              Characters used to render the image, from transparent to opaque. Built-in charsets: block, emoji, default, russian, slight, minimal [default: default]
+  -o, --char-override <CHAR_OVERRIDE>  Character override. Ignores the current charset and repeats the desired string for the entirety of the output image
+  -h, --help                           Print help
+  -V, --version                        Print version
 ```
 
 ## Features

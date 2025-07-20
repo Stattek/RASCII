@@ -1,7 +1,7 @@
 use std::io;
 
 use clap::Parser;
-use rascii_art::{charsets, RenderOptions};
+use rascii_art::{charsets, convert_string_to_str_vec, RenderOptions};
 use unicode_segmentation::UnicodeSegmentation;
 
 // default width of output image
@@ -43,7 +43,7 @@ struct Args {
 
     /// Character override. Ignores the current charset and repeats the desired string for the
     /// entirety of the output image.
-    #[arg(short, long)]
+    #[arg(short = 'o', long)]
     char_override: Option<String>,
 }
 
@@ -67,7 +67,11 @@ fn main() -> image::ImageResult<()> {
             invert: args.invert,
             escape_each_colored_char: args.escape_each_colored_char,
             charset,
-            char_override: args.char_override,
+            char_override: if let Some(char_override) = args.char_override {
+                Some(convert_string_to_str_vec(char_override))
+            } else {
+                None
+            },
         },
     )?;
 
