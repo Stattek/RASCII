@@ -10,6 +10,7 @@ pub struct RenderOptions<'a> {
     pub escape_each_colored_char: bool,
     pub invert: bool,
     pub charset: &'a [&'a str],
+    pub char_override: Option<Vec<String>>,
 }
 
 #[allow(dead_code)]
@@ -56,6 +57,12 @@ impl<'a> RenderOptions<'a> {
         self.charset = charset;
         self
     }
+
+    /// Set the character override to repeat in the rendered image. Ignores the current charset.
+    pub fn char_override(mut self, char_override: Vec<String>) -> Self {
+        self.char_override = Some(char_override);
+        self
+    }
 }
 
 impl Default for RenderOptions<'_> {
@@ -67,6 +74,7 @@ impl Default for RenderOptions<'_> {
             escape_each_colored_char: false,
             invert: false,
             charset: charsets::DEFAULT,
+            char_override: None,
         }
     }
 }

@@ -40,6 +40,11 @@ struct Args {
     /// Built-in charsets: block, emoji, default, russian, slight, minimal
     #[arg(short = 'C', long, default_value = "default")]
     charset: String,
+
+    /// Character override. Ignores the current charset and repeats the desired string for the
+    /// entirety of the output image.
+    #[arg(short, long)]
+    char_override: Option<String>,
 }
 
 fn main() -> image::ImageResult<()> {
@@ -62,6 +67,7 @@ fn main() -> image::ImageResult<()> {
             invert: args.invert,
             escape_each_colored_char: args.escape_each_colored_char,
             charset,
+            char_override: args.char_override,
         },
     )?;
 

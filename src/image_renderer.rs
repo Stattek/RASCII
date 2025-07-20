@@ -13,7 +13,38 @@ pub struct ImageRenderer<'a> {
 const OPACITY_THRESHOLD: f64 = 0.95;
 
 impl ImageRenderer<'_> {
-    fn get_char_for_pixel(&self, pixel: &Rgba<u8>, maximum: f64) -> &str {
+    /// Gets a character string from the character override vector.
+    ///
+    /// # Params
+    /// - `char_override` - The character override vector.
+    /// - `index` - The current pixel index into the image.
+    ///
+    /// # Returns
+    /// - A String reference to the corresponding character in the `char_override` for this pixel.
+    fn get_char_from_pixel_override<'a>(
+        &self,
+        char_override: &'a Vec<String>,
+        index: usize,
+    ) -> &'a String {
+        // inverting will reverse the string
+        let char_index = if self.options.invert {
+            char_override.len() - 1 - (index % char_override.len())
+        } else {
+            index % char_override.len()
+        };
+
+        &char_override[char_index]
+    }
+
+    /// Gets a character to write from the pixel's properties.
+    ///
+    /// # Params
+    /// - `pixel` - The pixel to analyze.
+    /// - `maximum` - The maximum brightness (for grayscale)
+    ///
+    /// # Returns
+    /// - A string slice to the corresponding character in the charset for this pixel.
+    fn get_char_from_pixel_properties(&self, pixel: &Rgba<u8>, maximum: f64) -> &str {
         let as_grayscale = self.get_grayscale(pixel) / maximum;
         let percent_opaque = self.get_opacity_percent(pixel);
 
@@ -29,6 +60,31 @@ impl ImageRenderer<'_> {
         } else {
             char_index
         }]
+    }
+
+    /// Gets the character for the pixel. If there is a character override, it will handle the
+    /// character override and give the override string to write. Otherwise, will get a character
+    /// for the pixel based on the pixel's properties.
+    ///
+    /// # Params
+    /// - `pixel` - The pixel to analyze.
+    /// - `maximum` - The maximum brightness (for grayscale)
+    /// - `char_override` - The character override vector.
+    /// - `cur_index` - The current pixel index into the image.
+    ///
+    /// # Returns
+    /// - The character for this pixel, as a string slice.
+    fn get_char_for_pixel<'a>(
+        &'a self,
+        pixel: &Rgba<u8>,
+        maximum: f64,
+        char_override: &'a Option<Vec<String>>,
+        cur_index: usize,
+    ) -> &'a str {
+        match char_override {
+            Some(char_vec) => self.get_char_from_pixel_override(char_vec, cur_index),
+            None => self.get_char_from_pixel_properties(pixel, maximum),
+        }
     }
 
     fn get_opacity_percent(&self, pixel: &Rgba<u8>) -> f64 {
@@ -78,7 +134,8 @@ impl<'a> Renderer<'a, DynamicImage> for ImageRenderer<'a> {
         let maximum = image
             .pixels()
             .fold(0.0, |acc, pixel| self.get_grayscale(pixel).max(acc));
-        for (_, line, pixel) in image.enumerate_pixels() {
+
+        for (i, line, pixel) in image.enumerate_pixels() {
             if current_line < line {
                 current_line = line;
 
@@ -101,8 +158,9 @@ impl<'a> Renderer<'a, DynamicImage> for ImageRenderer<'a> {
                 last_color = Some(color);
             }
 
-            let char_for_pixel = self.get_char_for_pixel(pixel, maximum);
-            write!(writer, "{char_for_pixel}")?;
+            let char_for_pixel =
+                self.get_char_for_pixel(pixel, maximum, &self.options.char_override, i as usize);
+            write!(writer, "{}", char_for_pixel)?;
         }
 
         if let Some(last_color) = last_color {
@@ -147,7 +205,7 @@ impl<'a> Renderer<'a, DynamicImage> for ImageRenderer<'a> {
         let maximum = image
             .pixels()
             .fold(0.0, |acc, pixel| self.get_grayscale(pixel).max(acc));
-        for (_, line, pixel) in image.enumerate_pixels() {
+        for (i, line, pixel) in image.enumerate_pixels() {
             if current_line < line {
                 current_line = line;
 
@@ -173,7 +231,8 @@ impl<'a> Renderer<'a, DynamicImage> for ImageRenderer<'a> {
 
             // Normally this char_for_pixel has to be a char but because of the compatibility
             // reasons with unicode-segmentation It's implemented as a &str (WORKAROUND)
-            let char_for_pixel = self.get_char_for_pixel(pixel, maximum);
+            let char_for_pixel =
+                self.get_char_for_pixel(pixel, maximum, &self.options.char_override, i as usize);
             buffer.push_str(char_for_pixel);
         }
 
