@@ -1,5 +1,5 @@
 [package]
-name = "rascii_art"
+name = "rascii_art_img"
 version = "0.4.6"
 authors = [ "UTFeight", "RGBCube", "Stattek" ]
 description = "Advanced ASCII Art Generator. Fork for imgii."
