@@ -57,7 +57,7 @@ fn main() -> image::ImageResult<()> {
         args.width = Some(DEFAULT_WIDTH);
     }
 
-    rascii_art::render(
+    rascii_art_img::render(
         &args.filename,
         &mut io::stdout(),
         &RenderOptions {
