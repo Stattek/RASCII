@@ -1,6 +1,6 @@
 //! # Usage:
 //! ```no_run
-//! use rascii_art::{
+//! use rascii_art_img::{
 //!     render_to,
 //!     RenderOptions,
 //! };

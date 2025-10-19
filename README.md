@@ -73,7 +73,7 @@ Options:
 > directly.
 
 ```sh
-cargo install rascii_art
+cargo install rascii_art_img
 ```
 
 ## Manually
@@ -92,14 +92,14 @@ chmod +x install.sh
 ## Using The Crate
 
 Instead of using the unreliable system shell to call RASCII, you can add the
-`rascii_art` crate to your project and use it in Rust!
+`rascii_art_img` crate to your project and use it in Rust!
 
-To do so, run `cargo add rascii_art` to add RASCII to your Cargo project.
+To do so, run `cargo add rascii_art_img` to add RASCII to your Cargo project.
 
 Here is a code example:
 
 ```rs
-use rascii_art::{
+use rascii_art_img::{
     render_to,
     RenderOptions,
 };
