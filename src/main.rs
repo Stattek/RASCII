@@ -1,7 +1,7 @@
 use std::io;
 
 use clap::Parser;
-use rascii_art::{charsets, convert_string_to_str_vec, RenderOptions};
+use rascii_art_img::{charsets, convert_string_to_str_vec, RenderOptions};
 use unicode_segmentation::UnicodeSegmentation;
 
 // default width of output image
