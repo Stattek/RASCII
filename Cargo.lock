@@ -741,8 +741,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "rascii_art"
-version = "0.4.5"
+name = "rascii_art_img"
+version = "0.4.6"
 dependencies = [
  "ansi_term",
  "clap",
