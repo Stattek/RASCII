@@ -9,7 +9,7 @@ use unicode_segmentation::UnicodeSegmentation;
 ///
 /// # Returns
 /// - A `Vec<String>`, with each element of the vec containing one character each.
-pub fn convert_string_to_str_vec(the_str: String) -> Vec<String> {
+pub fn convert_string_to_str_vec(the_str: &String) -> Vec<String> {
     let graphemes = the_str.graphemes(true);
     let mut output_vec = Vec::new();
     for cur_char in graphemes {
