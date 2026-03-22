@@ -68,7 +68,7 @@ fn main() -> image::ImageResult<()> {
             escape_each_colored_char: args.escape_each_colored_char,
             charset,
             char_override: if let Some(char_override) = args.char_override {
-                Some(convert_string_to_str_vec(char_override))
+                Some(convert_string_to_str_vec(&char_override))
             } else {
                 None
             },
